@@ -31,6 +31,12 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
+  void showSearchResults() {
+    setState(() {
+      // TODO: //
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,6 +57,12 @@ class _MyHomePageState extends State<MyHomePage> {
               padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
               child: TextField(
                 decoration: InputDecoration(
+                  prefixIcon: Icon(Icons.search),
+                  suffixIcon: IconButton(
+                      onPressed: showSearchResults(),
+                      icon: Icon(Icons.arrow_forward_outlined),
+                      color: Colors.blueAccent,
+                  ),
                   border: OutlineInputBorder(),
                   hintText: 'Search Wikipedia',
                 ),
