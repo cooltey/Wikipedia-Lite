@@ -45,8 +45,8 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Center(
         child: Column(
-          children: const <Widget>[
-            Padding(
+          children: <Widget>[
+            const Padding(
               padding: EdgeInsets.fromLTRB(16, 32, 16, 16),
               child: Text(
                 "Welcome to Wikipedia Lite",
@@ -54,16 +54,16 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
               child: TextField(
                 decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.search),
+                  prefixIcon: const Icon(Icons.search),
                   suffixIcon: IconButton(
-                      onPressed: showSearchResults(),
-                      icon: Icon(Icons.arrow_forward_outlined),
+                      onPressed: showSearchResults,
+                      icon: const Icon(Icons.arrow_forward_outlined),
                       color: Colors.blueAccent,
                   ),
-                  border: OutlineInputBorder(),
+                  border: const OutlineInputBorder(),
                   hintText: 'Search Wikipedia',
                 ),
               )
