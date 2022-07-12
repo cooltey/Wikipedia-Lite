@@ -31,6 +31,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
+
+
   void showSearchResults() {
     setState(() {
       // TODO: //
@@ -43,7 +45,13 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
+      body: Container(
+        decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: NetworkImage("urlImage"),
+              fit: BoxFit.cover,
+            )
+        ),
         child: Column(
           children: <Widget>[
             const Padding(
