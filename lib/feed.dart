@@ -1,12 +1,13 @@
 class Feed {
-  final String name;
-  final String email;
+  final Image image;
 
-  Feed(this.name, this.email);
+  const Feed({
+    required this.image
+  });
 
-  Feed.fromJson(Map<String, dynamic> json)
-      : name = json['name'],
-        email = json['email'];
+  factory Feed.fromJson(Map<String, dynamic> json) {
+    return Feed(image: json['image']);
+  }
 }
 
 class Image {
@@ -14,23 +15,38 @@ class Image {
   final ImageInfo thumbnail;
   final ImageInfo image;
 
-  Image(this.title, this.thumbnail, this.image);
+  const Image({
+    required this.title,
+    required this.thumbnail,
+    required this.image,
+  });
 
-  Image.fromJson(Map<String, dynamic> json)
-      : title = json['title'],
-        thumbnail = json['thumbnail'],
-        image = json['image'];
+  factory Image.fromJson(Map<String, dynamic> json) {
+    return Image(
+      title: json['title'],
+      thumbnail: json['thumbnail'],
+      image: json['image'],
+    );
+  }
 }
 
 class ImageInfo {
+
   final String source;
   final int width;
   final int height;
 
-  ImageInfo(this.source, this.width, this.height);
+  const ImageInfo({
+    required this.source,
+    required this.width,
+    required this.height,
+  });
 
-  ImageInfo.fromJson(Map<String, dynamic> json)
-      : source = json['source'],
-        width = json['width'],
-        height = json['height'];
+  factory ImageInfo.fromJson(Map<String, dynamic> json) {
+    return ImageInfo(
+      source: json['source'],
+      width: json['width'],
+      height: json['height'],
+    );
+  }
 }

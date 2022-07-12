@@ -1,5 +1,9 @@
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:wikipedia_lite/feed.dart';
 
 void main() {
   runApp(const MyApp());
@@ -32,9 +36,15 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
-  Future<http.Response> fetchFeedForToday() {
+  Future<String> fetchFeatureImageUrl() async  {
     DateTime now = DateTime.now();
-    return http.get(Uri.parse('https://en.wikipedia.org/api/rest_v1/feed/featured/${now.year}/${now.month}/${now.day}'));
+    final response = await http.get(Uri.parse('https://en.wikipedia.org/api/rest_v1/feed/featured/${now.year}/${now.month}/${now.day}'));
+    if (response.statusCode == 200) {
+      final feed = Feed.fromJson(jsonDecode(response.body));
+      return feed.image.thumbnail.source;
+    } else {
+      throw Exception('Failed to load the feature image');
+    }
   }
 
   void showSearchResults() {
