@@ -64,11 +64,16 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   child: Column(
                     children: <Widget>[
-                      const Padding(
-                        padding: EdgeInsets.fromLTRB(16, 32, 16, 16),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(16, 32, 16, 16),
                         child: Text(
                           "Welcome to Wikipedia Lite",
-                          style: TextStyle(fontSize: 20.0),
+                          style: TextStyle(
+                            fontSize: 20,
+                            background: Paint()..color = Colors.white70
+                              ..strokeWidth = 25
+                              ..style = PaintingStyle.stroke,
+                          ),
                         ),
                       ),
                       Padding(
@@ -81,6 +86,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                 icon: const Icon(Icons.arrow_forward_outlined)
                               ),
                               border: const OutlineInputBorder(),
+                              fillColor: Colors.white70,
+                              filled: true,
                               hintText: 'Search Wikipedia',
                             ),
                           )
