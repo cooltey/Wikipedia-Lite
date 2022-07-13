@@ -6,7 +6,7 @@ class Feed {
   });
 
   factory Feed.fromJson(Map<String, dynamic> json) {
-    return Feed(image: json['image']);
+    return Feed(image: Image.fromJson(json['image']));
   }
 }
 
@@ -24,8 +24,8 @@ class Image {
   factory Image.fromJson(Map<String, dynamic> json) {
     return Image(
       title: json['title'],
-      thumbnail: json['thumbnail'],
-      image: json['image'],
+      thumbnail: ImageInfo.fromJson(json['thumbnail']),
+      image: ImageInfo.fromJson(json['image']),
     );
   }
 }

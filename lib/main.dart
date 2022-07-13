@@ -46,61 +46,74 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<String>(
-      future: futureFeaturedImageUrl,
-      builder: (context, snapshot) {
-        String featuredImageUrl = snapshot.data!;
-        return Scaffold(
-          appBar: AppBar(
-            title: Text(widget.title),
-          ),
-          body: Container(
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: NetworkImage(featuredImageUrl),
-                  fit: BoxFit.cover,
-                )
-            ),
-            child: Column(
-              children: <Widget>[
-                const Padding(
-                  padding: EdgeInsets.fromLTRB(16, 32, 16, 16),
-                  child: Text(
-                    "Welcome to Wikipedia Lite",
-                    style: TextStyle(fontSize: 20.0),
+    return Scaffold(
+        appBar: AppBar(
+          title: Text(widget.title),
+        ),
+        body: FutureBuilder<String>(
+            future: futureFeaturedImageUrl,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                String? featuredImageUrl = snapshot.data;
+                return Container(
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: NetworkImage(featuredImageUrl ?? ""),
+                        fit: BoxFit.cover,
+                      )
                   ),
-                ),
-                Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                    child: TextField(
-                      decoration: InputDecoration(
-                        prefixIcon: const Icon(Icons.search),
-                        suffixIcon: IconButton(
-                          onPressed: showSearchResults,
-                          icon: const Icon(Icons.arrow_forward_outlined),
-                          color: Colors.blueAccent,
+                  child: Column(
+                    children: <Widget>[
+                      const Padding(
+                        padding: EdgeInsets.fromLTRB(16, 32, 16, 16),
+                        child: Text(
+                          "Welcome to Wikipedia Lite",
+                          style: TextStyle(fontSize: 20.0),
                         ),
-                        border: const OutlineInputBorder(),
-                        hintText: 'Search Wikipedia',
+                      ),
+                      Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                          child: TextField(
+                            decoration: InputDecoration(
+                              prefixIcon: const Icon(Icons.search),
+                              suffixIcon: IconButton(
+                                onPressed: showSearchResults,
+                                icon: const Icon(Icons.arrow_forward_outlined)
+                              ),
+                              border: const OutlineInputBorder(),
+                              hintText: 'Search Wikipedia',
+                            ),
+                          )
+                      )
+                    ],
+                  ),
+                );
+              } else if (snapshot.hasError) {
+                return Column(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(16, 32, 16, 16),
+                      child: Text(
+                        snapshot.error.toString(),
+                        style: const TextStyle(fontSize: 20.0),
                       ),
                     )
-                )
-              ],
-            ),
-          ),
-        );
-      },
+                  ],
+                );
+              }
+              return const LinearProgressIndicator();
+            }),
     );
   }
 
-  Future<String> fetchFeaturedImageUrl() async  {
+  Future<String> fetchFeaturedImageUrl() async {
     DateTime now = DateTime.now();
     final response = await http.get(Uri.parse('https://en.wikipedia.org/api/rest_v1/feed/featured/${now.year}/${now.month.toString().padLeft(2, '0')}/${now.day.toString().padLeft(2, '0')}'));
     if (response.statusCode == 200) {
       final feed = Feed.fromJson(jsonDecode(response.body));
       return feed.image.thumbnail.source;
     } else {
-      throw Exception('Failed to load the feature image');
+      throw Exception('Cannot fetch featured image URL');
     }
   }
 
