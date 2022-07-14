@@ -3,7 +3,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:wikipedia_lite/feed.dart';
+import 'package:wikipedia_lite/data/feed.dart';
+import 'package:wikipedia_lite/data/search.dart';
 
 void main() {
   runApp(const MyApp());
@@ -36,7 +37,9 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
+  final searchFieldController = TextEditingController();
   late Future<String> futureFeaturedImageUrl;
+  List<PageInfo> searchResults = List.empty();
 
   @override
   void initState() {
@@ -79,10 +82,13 @@ class _MyHomePageState extends State<MyHomePage> {
                       Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                           child: TextField(
+                            controller: searchFieldController,
                             decoration: InputDecoration(
                               prefixIcon: const Icon(Icons.search),
                               suffixIcon: IconButton(
-                                onPressed: showSearchResults,
+                                onPressed: () async {
+                                    showSearchResult(searchFieldController.text);
+                                  },
                                 icon: const Icon(Icons.arrow_forward_outlined)
                               ),
                               border: const OutlineInputBorder(),
@@ -91,7 +97,23 @@ class _MyHomePageState extends State<MyHomePage> {
                               hintText: 'Search Wikipedia',
                             ),
                           )
-                      )
+                      ),
+                      Expanded(
+                          child: ListView.separated(
+                            padding: const EdgeInsets.all(8),
+                            itemCount: searchResults.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              PageInfo pageInfo = searchResults[index];
+                              return ListTile(
+                                title: Text(pageInfo.title),
+                                subtitle: Text(pageInfo.description),
+                              );
+                            },
+                            separatorBuilder: (BuildContext context, int index) {
+                              return const Divider();
+                            },
+                          )
+                      ),
                     ],
                   ),
                 );
@@ -124,9 +146,17 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  void showSearchResults() {
-    setState(() {
-      // TODO: //
-    });
+  void showSearchResult(String query) async {
+    final response = await http.get(Uri.parse('https://en.wikipedia.org/w/api.php?format=json&'
+        'formatversion=2&errorformat=html&errorsuselocal=1&action=query&redirects=&converttitles=&'
+        'prop=description|info&generator=prefixsearch&gpsnamespace=0&list=search&srnamespace=0&'
+        'inprop=varianttitles&srwhat=text&srinfo=suggestion&srprop=&sroffset=0&srlimit=1&'
+        'gpssearch=$query&gpslimit=30&gpsoffset=1&srsearch=$query'));
+    if (response.statusCode == 200) {
+      final search = Search.fromJson(jsonDecode(response.body));
+      searchResults.addAll(search.query.pages);
+    } else {
+      throw Exception('Cannot prefix search URL');
+    }
   }
 }
