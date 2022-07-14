@@ -39,7 +39,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   final searchFieldController = TextEditingController();
   late Future<String> futureFeaturedImageUrl;
-  List<PageInfo> searchResults = List.empty();
+  List<PageInfo> searchResults = List.empty(growable: true);
 
   @override
   void initState() {
@@ -106,7 +106,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               PageInfo pageInfo = searchResults[index];
                               return ListTile(
                                 title: Text(pageInfo.title),
-                                subtitle: Text(pageInfo.description),
+                                subtitle: Text(pageInfo.title),
                               );
                             },
                             separatorBuilder: (BuildContext context, int index) {
@@ -154,7 +154,9 @@ class _MyHomePageState extends State<MyHomePage> {
         'gpssearch=$query&gpslimit=30&gpsoffset=1&srsearch=$query'));
     if (response.statusCode == 200) {
       final search = Search.fromJson(jsonDecode(response.body));
-      searchResults.addAll(search.query.pages);
+      setState(() {
+        searchResults.addAll(search.query.pages);
+      });
     } else {
       throw Exception('Cannot prefix search URL');
     }

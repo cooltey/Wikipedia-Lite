@@ -51,17 +51,14 @@ class Query {
 
 class PageInfo {
   final String title;
-  final String description;
 
   const PageInfo({
     required this.title,
-    required this.description,
   });
 
   factory PageInfo.fromJson(Map<String, dynamic> json) {
     return PageInfo(
-        title: json['title'],
-        description: json['description']
+        title: json['title']
     );
   }
 }
