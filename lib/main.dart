@@ -99,20 +99,25 @@ class _MyHomePageState extends State<MyHomePage> {
                           )
                       ),
                       Expanded(
-                          child: ListView.separated(
-                            padding: const EdgeInsets.all(8),
-                            itemCount: searchResults.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              PageInfo pageInfo = searchResults[index];
-                              return ListTile(
+                        child: ListView.separated(
+                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+                          itemCount: searchResults.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            PageInfo pageInfo = searchResults[index];
+                            return Container(
+                              decoration: const BoxDecoration (
+                                  color: Colors.white70
+                              ),
+                              child: ListTile(
                                 title: Text(pageInfo.title),
                                 subtitle: Text(pageInfo.title),
-                              );
-                            },
-                            separatorBuilder: (BuildContext context, int index) {
-                              return const Divider();
-                            },
-                          )
+                              )
+                            );
+                          },
+                          separatorBuilder: (BuildContext context, int index) {
+                            return const Divider();
+                          },
+                        )
                       ),
                     ],
                   ),
@@ -151,7 +156,7 @@ class _MyHomePageState extends State<MyHomePage> {
         'formatversion=2&errorformat=html&errorsuselocal=1&action=query&redirects=&converttitles=&'
         'prop=description|info&generator=prefixsearch&gpsnamespace=0&list=search&srnamespace=0&'
         'inprop=varianttitles&srwhat=text&srinfo=suggestion&srprop=&sroffset=0&srlimit=1&'
-        'gpssearch=$query&gpslimit=30&gpsoffset=1&srsearch=$query'));
+        'gpssearch=$query&gpslimit=100&gpsoffset=1&srsearch=$query'));
     if (response.statusCode == 200) {
       final search = Search.fromJson(jsonDecode(response.body));
       setState(() {
