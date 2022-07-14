@@ -73,7 +73,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           "Welcome to Wikipedia Lite",
                           style: TextStyle(
                             fontSize: 20,
-                            background: Paint()..color = Colors.white70
+                            background: Paint()..color = const Color(0xE6FFFFFF)
                               ..strokeWidth = 25
                               ..style = PaintingStyle.stroke,
                           ),
@@ -92,30 +92,28 @@ class _MyHomePageState extends State<MyHomePage> {
                                 icon: const Icon(Icons.arrow_forward_outlined)
                               ),
                               border: const OutlineInputBorder(),
-                              fillColor: Colors.white70,
+                              fillColor: const Color(0xE6FFFFFF),
                               filled: true,
                               hintText: 'Search Wikipedia',
                             ),
                           )
                       ),
                       Expanded(
-                        child: ListView.separated(
+                        child: ListView.builder(
                           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
                           itemCount: searchResults.length,
                           itemBuilder: (BuildContext context, int index) {
                             PageInfo pageInfo = searchResults[index];
                             return Container(
                               decoration: const BoxDecoration (
-                                  color: Colors.white70
+                                  color: Color(0xE6FFFFFF)
                               ),
                               child: ListTile(
                                 title: Text(pageInfo.title),
                                 subtitle: Text(pageInfo.title),
+                                onTap: () => openWebView(),
                               )
                             );
-                          },
-                          separatorBuilder: (BuildContext context, int index) {
-                            return const Divider();
                           },
                         )
                       ),
@@ -165,5 +163,11 @@ class _MyHomePageState extends State<MyHomePage> {
     } else {
       throw Exception('Cannot prefix search URL');
     }
+  }
+
+  void openWebView() {
+    setState(() {
+      // TODO
+    });
   }
 }
