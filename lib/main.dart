@@ -147,7 +147,7 @@ class _MyHomePageState extends State<MyHomePage> {
     final response = await http.get(Uri.parse('https://en.wikipedia.org/api/rest_v1/feed/featured/${now.year}/${now.month.toString().padLeft(2, '0')}/${now.day.toString().padLeft(2, '0')}'));
     if (response.statusCode == 200) {
       final feed = Feed.fromJson(jsonDecode(response.body));
-      return feed.image.image.source;
+      return feed.image.thumbnail.source.replaceAll('640px', '1080px');
     } else {
       throw Exception('Cannot fetch featured image URL');
     }

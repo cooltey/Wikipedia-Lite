@@ -44,7 +44,7 @@ class _ReadArticleState extends State<ReadArticle> {
           ),
           body: Center(
             child: WebView(
-              initialUrl: 'https://en.m.wikipedia.org/wiki/${widget.pageTitle}',
+              initialUrl: 'https://en.m.wikipedia.org/wiki/${widget.pageTitle.replaceAll(' +', '_')}',
               javascriptMode: JavascriptMode.unrestricted,
               onWebViewCreated: (WebViewController webViewController) {
                 _controller = webViewController;
