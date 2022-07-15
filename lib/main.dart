@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Wikipedia Lite',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.grey,
       ),
       home: const MyHomePage(title: 'Wikipedia Lite'),
     );
@@ -114,7 +114,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 subtitle: Text(pageInfo.title),
                                 onTap: () => Navigator.push(
                                   context,
-                                  MaterialPageRoute(builder: (context) => const ReadArticle()),
+                                  MaterialPageRoute(builder: (context) => ReadArticle(pageTitle: pageInfo.title)),
                                 ),
                               )
                             );
@@ -147,7 +147,7 @@ class _MyHomePageState extends State<MyHomePage> {
     final response = await http.get(Uri.parse('https://en.wikipedia.org/api/rest_v1/feed/featured/${now.year}/${now.month.toString().padLeft(2, '0')}/${now.day.toString().padLeft(2, '0')}'));
     if (response.statusCode == 200) {
       final feed = Feed.fromJson(jsonDecode(response.body));
-      return feed.image.thumbnail.source;
+      return feed.image.image.source;
     } else {
       throw Exception('Cannot fetch featured image URL');
     }
@@ -162,6 +162,7 @@ class _MyHomePageState extends State<MyHomePage> {
     if (response.statusCode == 200) {
       final search = Search.fromJson(jsonDecode(response.body));
       setState(() {
+        searchResults.clear();
         searchResults.addAll(search.query.pages);
       });
     } else {
