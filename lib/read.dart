@@ -28,19 +28,30 @@ class _ReadArticleState extends State<ReadArticle> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.pageTitle),
-      ),
-      body: Center(
-        child: WebView(
-          initialUrl: 'https://en.m.wikipedia.org/wiki/${widget.pageTitle}',
-          javascriptMode: JavascriptMode.unrestricted,
-          onWebViewCreated: (WebViewController webViewController) {
-            _controller = webViewController;
-          },
+    return WillPopScope(
+        onWillPop: () async {
+          var canGoBack = await _controller.canGoBack();
+          if(canGoBack){
+            _controller.goBack();
+            return false;
+          }else{
+            return true;
+          }
+        },
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text(widget.pageTitle),
+          ),
+          body: Center(
+            child: WebView(
+              initialUrl: 'https://en.m.wikipedia.org/wiki/${widget.pageTitle}',
+              javascriptMode: JavascriptMode.unrestricted,
+              onWebViewCreated: (WebViewController webViewController) {
+                _controller = webViewController;
+              },
+            ),
+          ),
         ),
-      ),
     );
   }
 }
