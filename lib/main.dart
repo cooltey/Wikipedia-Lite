@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:wikipedia_lite/data/feed.dart';
 import 'package:wikipedia_lite/data/search.dart';
+import 'package:wikipedia_lite/read.dart';
 
 void main() {
   runApp(const MyApp());
@@ -111,7 +112,10 @@ class _MyHomePageState extends State<MyHomePage> {
                               child: ListTile(
                                 title: Text(pageInfo.title),
                                 subtitle: Text(pageInfo.title),
-                                onTap: () => openWebView(),
+                                onTap: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => const ReadArticle()),
+                                ),
                               )
                             );
                           },
@@ -163,11 +167,5 @@ class _MyHomePageState extends State<MyHomePage> {
     } else {
       throw Exception('Cannot prefix search URL');
     }
-  }
-
-  void openWebView() {
-    setState(() {
-      // TODO
-    });
   }
 }
